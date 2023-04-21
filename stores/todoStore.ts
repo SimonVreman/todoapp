@@ -1,28 +1,29 @@
 import { NonPersistedTodo, Todo } from "@/types/todo"
 import { makeAutoObservable } from "mobx"
 import { makePersistable } from "mobx-persist-store"
+import { RootStore } from "@/stores/rootStore"
 
 export class TodoStore {
   todos: Todo[] = []
 
-  constructor() {
+  constructor(rootStore: RootStore) {
     makeAutoObservable(this)
 
     makePersistable(this, { name: "TodoStore", properties: ["todos"], storage: window.localStorage })
   }
 
-  getTodoById(id: number) {
+  getById(id: number) {
     return this.todos.find((todo) => todo.id === id)
   }
 
-  createTodo(todo: NonPersistedTodo) {
+  create(todo: NonPersistedTodo) {
     this.todos.push({
       ...todo,
       id: this.getAvailableId(),
     })
   }
 
-  updateTodo(todo: NonPersistedTodo, id: number) {
+  update(todo: NonPersistedTodo, id: number) {
     const index = this.todos.findIndex((todo) => todo.id === id)
     this.todos[index] = {
       ...todo,
@@ -30,11 +31,12 @@ export class TodoStore {
     }
   }
 
-  deleteTodoById(id: number) {
+  deleteById(id: number) {
     this.todos = this.todos.filter((todo) => todo.id !== id)
   }
 
   getAvailableId() {
-    return this.todos.sort((a, b) => a.id - b.id)[this.todos.length - 1].id + 1
+    const highestTodo = this.todos.sort((a) => a.id)[this.todos.length - 1]
+    return highestTodo ? highestTodo.id + 1 : 0
   }
 }

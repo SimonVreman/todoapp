@@ -4,6 +4,7 @@ import { NonPersistedTodo, Todo } from "@/types/todo"
 import React from "react"
 import { useForm } from "react-hook-form"
 import classNames from "classnames"
+import { useStore } from "@/stores/rootStore"
 
 export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   const {
@@ -11,7 +12,8 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
     handleSubmit,
     formState: { errors },
   } = useForm()
-  const onSubmit = (data) => {}
+  const { todoStore } = useStore()
+  const onSubmit = (data) => (oldTodo?.id !== undefined ? todoStore.update(data, oldTodo.id) : todoStore.create(data))
 
   const todo: NonPersistedTodo = {
     name: oldTodo?.name ?? "",
@@ -67,6 +69,8 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
           className={"w-full"}
           type={"range"}
           step={1}
+          min={1}
+          max={3}
           {...register("priority", { required: true, min: 1, max: 3 })}
           aria-invalid={errors.priority ? "true" : "false"}
         />
