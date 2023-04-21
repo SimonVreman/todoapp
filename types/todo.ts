@@ -4,6 +4,7 @@ export interface Todo {
   description: string
   timestamp?: number
   priority: number
+  updated: number
 }
 
 export interface NonPersistedTodo {

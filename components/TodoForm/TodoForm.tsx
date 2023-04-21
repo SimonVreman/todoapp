@@ -5,7 +5,7 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import classNames from "classnames"
 import { useStore } from "@/stores/rootStore"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   const {

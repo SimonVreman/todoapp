@@ -21,6 +21,7 @@ export class TodoStore {
     const newTodo = {
       ...todo,
       id: this.getAvailableId(),
+      updated: Date.now(),
     }
     this.todos.push(newTodo)
     return newTodo
@@ -30,6 +31,7 @@ export class TodoStore {
     const modifiedTodo = {
       ...todo,
       id,
+      updated: Date.now(),
     }
     const index = this.todos.findIndex((todo) => todo.id === id)
     this.todos[index] = modifiedTodo
