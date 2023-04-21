@@ -1,3 +1,5 @@
+"use client"
+
 import { TodoStore } from "@/stores/todoStore"
 import React from "react"
 
