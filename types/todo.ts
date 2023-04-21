@@ -2,7 +2,7 @@ export interface Todo {
   id: number
   name: string
   description: string
-  timestamp: number
+  timestamp?: number
   priority: number
 }
 
