@@ -15,6 +15,10 @@ export default function Page({ params }) {
   return (
     <SimplePage title={todo ? todo.name : "Todo not found"}>
       <div>
+        {todo.done && <span></span>}
+        {!todo.done && <span></span>}
+      </div>
+      <div>
         <p>{todo.description}</p>
       </div>
     </SimplePage>

@@ -26,6 +26,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
     description: oldTodo?.description ?? "",
     priority: oldTodo?.priority ?? 2,
     timestamp: oldTodo?.timestamp ?? 0,
+    done: false,
   }
 
   return (
