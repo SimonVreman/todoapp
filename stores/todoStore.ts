@@ -9,7 +9,8 @@ export class TodoStore {
   constructor(rootStore: RootStore) {
     makeAutoObservable(this)
 
-    makePersistable(this, { name: "TodoStore", properties: ["todos"], storage: window.localStorage })
+    if (typeof window !== "undefined")
+      makePersistable(this, { name: "TodoStore", properties: ["todos"], storage: window.localStorage })
   }
 
   getById(id: number) {
@@ -17,18 +18,22 @@ export class TodoStore {
   }
 
   create(todo: NonPersistedTodo) {
-    this.todos.push({
+    const newTodo = {
       ...todo,
       id: this.getAvailableId(),
-    })
+    }
+    this.todos.push(newTodo)
+    return newTodo
   }
 
   update(todo: NonPersistedTodo, id: number) {
-    const index = this.todos.findIndex((todo) => todo.id === id)
-    this.todos[index] = {
+    const modifiedTodo = {
       ...todo,
       id,
     }
+    const index = this.todos.findIndex((todo) => todo.id === id)
+    this.todos[index] = modifiedTodo
+    return modifiedTodo
   }
 
   deleteById(id: number) {

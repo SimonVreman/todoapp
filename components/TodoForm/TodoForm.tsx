@@ -5,6 +5,7 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import classNames from "classnames"
 import { useStore } from "@/stores/rootStore"
+import { useRouter } from "next/router"
 
 export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   const {
@@ -13,7 +14,12 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
     formState: { errors },
   } = useForm()
   const { todoStore } = useStore()
-  const onSubmit = (data) => (oldTodo?.id !== undefined ? todoStore.update(data, oldTodo.id) : todoStore.create(data))
+  const router = useRouter()
+
+  const onSubmit = async (data) => {
+    const todo = oldTodo?.id !== undefined ? todoStore.update(data, oldTodo.id) : todoStore.create(data)
+    await router.push(`/todo/${todo.id}`)
+  }
 
   const todo: NonPersistedTodo = {
     name: oldTodo?.name ?? "",
