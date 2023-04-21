@@ -13,13 +13,14 @@ export default function Page({ params }) {
   }
 
   return (
-    <SimplePage title={todo ? todo.name : "Todo not found"}>
+    <SimplePage title={todo.name}>
       <div>
         {todo.done && <span></span>}
         {!todo.done && <span></span>}
       </div>
-      <div>
-        <p>{todo.description}</p>
+      <div className={"text-gray-600"}>
+        {todo.description && <p>{todo.description}</p>}
+        {!todo.description && <p className={"italic"}>No description</p>}
       </div>
     </SimplePage>
   )
