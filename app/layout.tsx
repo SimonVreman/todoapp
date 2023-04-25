@@ -19,9 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <nav className={"w-full h-52 sm:w-52 sm:h-full bg-gray-200"}>
             <ErrorBoundary fallback={<NavigationError />}>
-              <Suspense fallback={<NavigationLoading />}>
-                <Navigation />
-              </Suspense>
+              <Navigation />
             </ErrorBoundary>
           </nav>
           <main className={"flex-grow bg-gray-100 border-t sm:border-t-0 sm:border-l border-gray-300 p-4"}>

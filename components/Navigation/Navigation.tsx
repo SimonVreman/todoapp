@@ -6,13 +6,26 @@ import { CheckIcon, MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/ou
 import classNames from "classnames"
 import { observer } from "mobx-react-lite"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { Todo } from "@/types/todo"
+import NavigationLoading from "@/components/Navigation/NavigationLoading"
 
 const Navigation = () => {
   const { todoStore } = useStore()
-  const pathname = usePathname()
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
-  const todos = todoStore.getAll()
+  const pathname = usePathname()
   const active = +pathname.split("/")[2]
+
+  useEffect(() => {
+    setTodos(todoStore.todos)
+    setLoading(false)
+  }, [todoStore.todos])
+
+  if (loading) {
+    return <NavigationLoading />
+  }
 
   return (
     <div className={"w-full h-full p-4 flex flex-col text-gray-600"}>
