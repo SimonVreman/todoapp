@@ -1,5 +1,6 @@
 import { TodoStore } from "@/stores/todoStore"
 import React from "react"
+import { enableStaticRendering } from "mobx-react"
 
 export class RootStore {
   public todoStore: TodoStore
@@ -21,6 +22,8 @@ function initializeStore(): RootStore {
 
   return _store
 }
+
+enableStaticRendering(typeof window === "undefined")
 
 const STORE_CONTEXT = React.createContext(initializeStore())
 export const useStore = () => React.useContext(STORE_CONTEXT)

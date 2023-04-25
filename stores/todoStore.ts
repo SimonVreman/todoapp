@@ -21,10 +21,6 @@ export class TodoStore {
     return this.todos.find((todo) => todo.id === id)
   }
 
-  getAll() {
-    return this.todos
-  }
-
   create(todo: NonPersistedTodo) {
     const newTodo = {
       ...todo,
