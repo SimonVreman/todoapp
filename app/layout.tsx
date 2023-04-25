@@ -1,8 +1,10 @@
 import "./globals.css"
-import React from "react"
+import React, { Suspense } from "react"
 import Navigation from "@/components/Navigation/Navigation"
 import NavigationError from "@/components/Navigation/NavigationError"
 import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary"
+import "react-loading-skeleton/dist/skeleton.css"
+import NavigationLoading from "@/components/Navigation/NavigationLoading"
 
 export const metadata = {
   title: "todo",
@@ -17,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <nav className={"w-full h-52 sm:w-52 sm:h-full bg-gray-200"}>
             <ErrorBoundary fallback={<NavigationError />}>
-              <Navigation />
+              <Suspense fallback={<NavigationLoading />}>
+                <Navigation />
+              </Suspense>
             </ErrorBoundary>
           </nav>
           <main className={"flex-grow bg-gray-100 border-t sm:border-t-0 sm:border-l border-gray-300 p-4"}>

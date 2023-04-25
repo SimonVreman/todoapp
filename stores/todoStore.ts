@@ -1,6 +1,6 @@
 import { NonPersistedTodo, Todo } from "@/types/todo"
 import { makeAutoObservable } from "mobx"
-import { makePersistable } from "mobx-persist-store"
+import { makePersistable, isHydrated } from "mobx-persist-store"
 import { RootStore } from "@/stores/rootStore"
 
 export class TodoStore {
@@ -10,7 +10,11 @@ export class TodoStore {
     makeAutoObservable(this)
 
     if (typeof window !== "undefined")
-      makePersistable(this, { name: "TodoStore", properties: ["todos"], storage: window.localStorage })
+      makePersistable(this, {
+        name: "TodoStore",
+        properties: ["todos"],
+        storage: window.localStorage,
+      })
   }
 
   getById(id: number) {
@@ -49,5 +53,9 @@ export class TodoStore {
   getAvailableId() {
     const highestTodo = this.todos.sort((a) => a.id)[this.todos.length - 1]
     return highestTodo ? highestTodo.id + 1 : 0
+  }
+
+  isHydrated() {
+    return isHydrated(this)
   }
 }
