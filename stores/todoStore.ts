@@ -42,6 +42,17 @@ export class TodoStore {
     return modifiedTodo
   }
 
+  toggleDone(id: number) {
+    const todo = this.getById(id)
+    const modifiedTodo = {
+      ...todo,
+      done: !todo.done,
+    }
+    delete modifiedTodo.id
+    delete modifiedTodo.updated
+    return this.update(modifiedTodo, todo.id)
+  }
+
   deleteById(id: number) {
     this.todos = this.todos.filter((todo) => todo.id !== id)
   }
