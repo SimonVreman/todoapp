@@ -6,7 +6,7 @@ import TodoPriorityBadge from "@/components/TodoPriorityBadge/TodoPriorityBadge"
 
 const NavigationGroup = ({ title, todos, active }: { title: string; todos: Todo[]; active: number }) => {
   return (
-    <div className={"mb-1"}>
+    <div className={"mb-2"}>
       <div className={"text-gray-500 text-sm mb-1"}>{title}</div>
       {todos
         .slice()

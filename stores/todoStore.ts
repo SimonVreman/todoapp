@@ -17,6 +17,10 @@ export class TodoStore {
       })
   }
 
+  get() {
+    return this.todos
+  }
+
   getById(id: number) {
     return this.todos.find((todo) => todo.id === id)
   }

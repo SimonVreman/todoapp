@@ -1,11 +1,33 @@
-import Link from "next/link"
+"use client"
 
-export default function Home() {
-  return (
-    <div className={"flex justify-center items-center h-full w-full"}>
-      <Link className={"text-gray-600 text-center underline"} href={"/todo/add"}>
-        No todo items yet, create one now!
-      </Link>
-    </div>
-  )
+import { notFound, useRouter } from "next/navigation"
+import { useStore } from "@/stores/rootStore"
+import { observer } from "mobx-react-lite"
+import Loading from "@/app/loading"
+import { useEffect } from "react"
+
+const Home = () => {
+  const { todoStore } = useStore()
+  const todos = todoStore.get()
+  const router = useRouter()
+
+  if (!todos || !todos.length) {
+    notFound()
+  }
+
+  useEffect(() => {
+    if (todos && todos.length) {
+      const todo = todos.slice().sort((a, b) => {
+        if (a.done && !b.done) return 1
+        if (a.timestamp && !b.timestamp) return -1
+        if (a.timestamp < b.timestamp) return -1
+        return 1
+      })[0]
+      router.push(`/todo/${todo.id}`)
+    }
+  }, [todos, router])
+
+  return <Loading />
 }
+
+export default observer(Home)
