@@ -3,8 +3,10 @@
 import SimplePage from "@/components/SimplePage/SimplePage"
 import { useStore } from "@/stores/rootStore"
 import { notFound } from "next/navigation"
+import TodoDetails from "@/components/TodoDetails/TodoDetails"
+import { observer } from "mobx-react-lite"
 
-export default function Page({ params }) {
+const Page = ({ params }) => {
   const { todoStore } = useStore()
   const todo = todoStore.getById(+params.id)
 
@@ -18,10 +20,13 @@ export default function Page({ params }) {
         {todo.done && <span></span>}
         {!todo.done && <span></span>}
       </div>
-      <div className={"text-gray-600"}>
+      <TodoDetails todo={todo} />
+      <div className={"mt-2"}>
         {todo.description && <p>{todo.description}</p>}
         {!todo.description && <p className={"italic"}>No description</p>}
       </div>
     </SimplePage>
   )
 }
+
+export default observer(Page)
