@@ -14,6 +14,8 @@ import dayjs from "dayjs"
 const Navigation = () => {
   const { todoStore } = useStore()
   const [todos, setTodos] = useState<Todo[]>([])
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([])
+  const [search, setSearch] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(true)
 
   const pathname = usePathname()
@@ -24,18 +26,22 @@ const Navigation = () => {
     setLoading(false)
   }, [todoStore.todos])
 
+  useEffect(() => {
+    setFilteredTodos(search.length ? todos.filter((todo) => (todo.name + todo.description).includes(search)) : todos)
+  }, [search, todos])
+
   if (loading) {
     return <NavigationLoading />
   }
 
-  const notDone = todos.filter((todo) => !todo.done)
+  const notDone = filteredTodos.filter((todo) => !todo.done)
   const groups = {
     Overdue: notDone.filter((todo) => todo.timestamp && todo.timestamp < Date.now()),
     Today: notDone.filter((todo) => todo.timestamp && dayjs(todo.timestamp).diff(dayjs(), "day") === 0),
     Tomorrow: notDone.filter((todo) => todo.timestamp && dayjs(todo.timestamp).diff(dayjs(), "day") === 1),
     Later: notDone.filter((todo) => todo.timestamp && dayjs(todo.timestamp).diff(dayjs(), "day") > 1),
     "No due date": notDone.filter((todo) => !todo.timestamp),
-    Done: todos.filter((todo) => todo.done),
+    Done: filteredTodos.filter((todo) => todo.done),
   }
 
   return (
@@ -51,11 +57,25 @@ const Navigation = () => {
         </Link>
       </div>
       <div className={"flex flex-col overflow-y-scroll"}>
-        {Object.keys(groups).map((group) => {
-          const todos = groups[group]
-          if (todos.length === 0) return null
-          return <NavigationGroup key={group} title={group} todos={groups[group]} active={active} />
-        })}
+        {todos && todos.length !== 0 && (
+          <input
+            type={"search"}
+            placeholder={"Search..."}
+            className={
+              "rounded-md border border-gray-300 p-1 my-2 focus:outline-none focus:border-gray-400 transition-colors"
+            }
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        )}
+        {todos &&
+          todos.length !== 0 &&
+          Object.keys(groups).map((group) => {
+            const todos = groups[group]
+            if (todos.length === 0) return null
+            return <NavigationGroup key={group} title={group} todos={groups[group]} active={active} />
+          })}
+        {!todos.length && <div className={"text-gray-500 text-center mt-4"}>Nothing :(</div>}
       </div>
     </div>
   )
