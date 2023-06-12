@@ -1,7 +1,7 @@
 "use client"
 
 import { NonPersistedTodo, Todo } from "@/types/todo"
-import React from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import classNames from "classnames"
 import { useStore } from "@/stores/rootStore"
@@ -15,8 +15,10 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   } = useForm()
   const { todoStore } = useStore()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (data) => {
+    setLoading(true)
     if (data.timestamp) data.timestamp = new Date(data.timestamp).getTime()
     const todo = oldTodo?.id !== undefined ? todoStore.update(data, oldTodo.id) : todoStore.create(data)
     await router.push(`/todo/${todo.id}`)
@@ -45,6 +47,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
           defaultValue={todo.name}
           {...register("name", { required: true, minLength: 3, maxLength: 40 })}
           aria-invalid={errors.name ? "true" : "false"}
+          disabled={loading}
         />
       </div>
 
@@ -62,6 +65,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
           defaultValue={todo.description}
           aria-invalid={errors.description ? "true" : "false"}
           {...register("description", { required: false, maxLength: 250 })}
+          disabled={loading}
         ></textarea>
       </div>
 
@@ -73,6 +77,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
           defaultValue={todo.timestamp ? new Date(todo.timestamp).toISOString().slice(0, 16) : undefined}
           {...register("timestamp", { required: false })}
           aria-invalid={errors.priority ? "true" : "false"}
+          disabled={loading}
         />
       </div>
 
@@ -93,11 +98,17 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
           defaultValue={todo.priority}
           {...register("priority", { required: true, min: 1, max: 3 })}
           aria-invalid={errors.priority ? "true" : "false"}
+          disabled={loading}
         />
       </div>
 
       <div className={"mb-2"}>
-        <button className={"bg-blue-500 text-white rounded-md px-3 py-1"}>Save</button>
+        <button
+          className={classNames("bg-blue-500 text-white rounded-md px-3 py-1", { "bg-gray-400": loading })}
+          disabled={loading}
+        >
+          Save
+        </button>
       </div>
     </form>
   )
