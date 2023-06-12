@@ -15,19 +15,21 @@ const NavigationGroup = ({ title, todos, active }: { title: string; todos: Todo[
           <div key={todo.id}>
             <Link
               href={`/todo/${todo.id}`}
-              className={classNames("flex items-center hover:text-gray-900 transition-all my-0.5", {
-                "pl-2 text-gray-900": todo.id === active,
-              })}
+              className={classNames("flex items-center hover:text-gray-900 transition-colors my-0.5")}
             >
               {todo.done && (
                 <CheckIcon
-                  className={classNames("h-6 mr-2 flex-shrink-0", {
+                  className={classNames("h-6 mr-1 flex-shrink-0", {
                     "text-green-500 hover:text-green-900": todo.done,
                   })}
                 />
               )}
               {!todo.done && <TodoPriorityBadge className={"mr-2"} priority={todo.priority} />}
-              <span className={"truncate"}>{todo.name}</span>
+              <span
+                className={classNames("truncate rounded-md transition-all", { "px-2 bg-gray-300": todo.id === active })}
+              >
+                {todo.name}
+              </span>
             </Link>
           </div>
         ))}

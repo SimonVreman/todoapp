@@ -56,18 +56,18 @@ const Navigation = () => {
           <PlusSmallIcon className={"h-6 mr-2"} /> New
         </Link>
       </div>
-      <div className={"flex flex-col overflow-y-scroll"}>
-        {todos && todos.length !== 0 && (
-          <input
-            type={"search"}
-            placeholder={"Search..."}
-            className={
-              "rounded-md border border-gray-300 p-1 my-2 focus:outline-none focus:border-gray-400 transition-colors"
-            }
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        )}
+      {todos && todos.length !== 0 && (
+        <input
+          type={"search"}
+          placeholder={"Search..."}
+          className={
+            "w-full rounded-md border border-gray-300 p-1 focus:outline-none focus:border-gray-400 transition-colors"
+          }
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      )}
+      <div className={"flex flex-col overflow-y-scroll mt-2"}>
         {todos &&
           todos.length !== 0 &&
           Object.keys(groups).map((group) => {

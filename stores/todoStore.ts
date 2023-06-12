@@ -5,6 +5,7 @@ import { RootStore } from "@/stores/rootStore"
 
 export class TodoStore {
   todos: Todo[] = []
+  deleteQueue: number[] = []
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this)
@@ -57,7 +58,16 @@ export class TodoStore {
     return this.update(modifiedTodo, todo.id)
   }
 
-  deleteById(id: number) {
+  scheduleDelete(id: number) {
+    this.deleteQueue.push(id)
+  }
+
+  executeDeletes() {
+    this.deleteQueue.forEach((id) => this.delete(id))
+    this.deleteQueue = []
+  }
+
+  delete(id: number) {
     this.todos = this.todos.filter((todo) => todo.id !== id)
   }
 

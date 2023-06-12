@@ -17,6 +17,7 @@ const Home = () => {
 
   useEffect(() => {
     if (todos && todos.length) {
+      todoStore.executeDeletes()
       const todo = todos.slice().sort((a, b) => {
         if (a.done && !b.done) return 1
         if (a.timestamp && !b.timestamp) return -1
@@ -25,7 +26,7 @@ const Home = () => {
       })[0]
       router.push(`/todo/${todo.id}`)
     }
-  }, [todos, router])
+  }, [todos, router, todoStore])
 
   return <Loading />
 }
