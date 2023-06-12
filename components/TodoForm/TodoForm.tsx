@@ -17,6 +17,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   const router = useRouter()
 
   const onSubmit = async (data) => {
+    if (data.timestamp) data.timestamp = new Date(data.timestamp).getTime()
     const todo = oldTodo?.id !== undefined ? todoStore.update(data, oldTodo.id) : todoStore.create(data)
     await router.push(`/todo/${todo.id}`)
   }
@@ -25,7 +26,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
     name: oldTodo?.name ?? "",
     description: oldTodo?.description ?? "",
     priority: oldTodo?.priority ?? 2,
-    timestamp: oldTodo?.timestamp ?? 0,
+    timestamp: oldTodo?.timestamp,
     done: false,
   }
 
@@ -65,6 +66,17 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
       </div>
 
       <div className={"mb-2"}>
+        <label className={"text-gray-600 mb-1"}>Due</label>
+        <input
+          className={"w-full p-1 rounded-md border border-gray-300"}
+          type={"datetime-local"}
+          defaultValue={todo.timestamp ? new Date(todo.timestamp).toISOString().slice(0, 16) : undefined}
+          {...register("timestamp", { required: false })}
+          aria-invalid={errors.priority ? "true" : "false"}
+        />
+      </div>
+
+      <div className={"mb-2"}>
         <label
           className={classNames("text-gray-600 mb-1", {
             "text-red-600": errors.priority,
@@ -78,6 +90,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
           step={1}
           min={1}
           max={3}
+          defaultValue={todo.priority}
           {...register("priority", { required: true, min: 1, max: 3 })}
           aria-invalid={errors.priority ? "true" : "false"}
         />

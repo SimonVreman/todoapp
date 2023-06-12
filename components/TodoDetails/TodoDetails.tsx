@@ -5,6 +5,7 @@ import { CheckIcon, PencilIcon } from "@heroicons/react/24/outline"
 import TodoPriorityBadge from "@/components/TodoPriorityBadge/TodoPriorityBadge"
 import { useStore } from "@/stores/rootStore"
 import classNames from "classnames"
+import RelativeTime from "@/components/RelativeTime/RelativeTime"
 
 const TodoDetails = ({ todo }: { todo: Todo }) => {
   const { todoStore } = useStore()
@@ -19,11 +20,15 @@ const TodoDetails = ({ todo }: { todo: Todo }) => {
           })}
         />
         <TodoPriorityBadge priority={todo.priority} />
-        {todo.timestamp && <span>Due {todo.timestamp}</span>}
+        {todo.timestamp && (
+          <span className={classNames({ "text-red-500": todo.timestamp < Date.now() })}>
+            Due <RelativeTime timestamp={todo.timestamp} />
+          </span>
+        )}
         {!todo.timestamp && <span>No due date</span>}
       </span>
       <Link
-        href={`/todo/edit/${todo.id}`}
+        href={`/todo/${todo.id}/edit`}
         className={"text-lg flex items-center hover:text-gray-900 transition-colors"}
       >
         <PencilIcon className={"h-6"} />
