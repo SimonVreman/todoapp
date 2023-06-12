@@ -6,9 +6,9 @@ import { useStore } from "@/stores/rootStore"
 import { notFound } from "next/navigation"
 import { observer } from "mobx-react-lite"
 
-const Page = ({ params }) => {
+const Page = ({ params }: { params: { id: number } }) => {
   const { todoStore } = useStore()
-  const todo = todoStore.getById(+params.id)
+  const todo = todoStore.getById(params.id)
 
   if (!todo) {
     notFound()
@@ -16,7 +16,7 @@ const Page = ({ params }) => {
 
   return (
     <SimplePage title={"Modify todo"}>
-      <TodoForm className={"w-full"} oldTodo={todo} />
+      <TodoForm oldTodo={todo} />
     </SimplePage>
   )
 }

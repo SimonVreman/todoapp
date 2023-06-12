@@ -6,9 +6,9 @@ import { notFound } from "next/navigation"
 import TodoDetails from "@/components/TodoDetails/TodoDetails"
 import { observer } from "mobx-react-lite"
 
-const Page = ({ params }) => {
+const Page = ({ params }: { params: { id: number } }) => {
   const { todoStore } = useStore()
-  const todo = todoStore.getById(+params.id)
+  const todo = todoStore.getById(params.id)
 
   if (!todo) {
     notFound()

@@ -19,14 +19,16 @@ const NavigationGroup = ({ title, todos, active }: { title: string; todos: Todo[
             >
               {todo.done && (
                 <CheckIcon
-                  className={classNames("h-6 mr-1 flex-shrink-0", {
+                  className={classNames("h-6 flex-shrink-0", {
                     "text-green-500 hover:text-green-900": todo.done,
                   })}
                 />
               )}
-              {!todo.done && <TodoPriorityBadge className={"mr-2"} priority={todo.priority} />}
+              {!todo.done && <TodoPriorityBadge priority={todo.priority} />}
               <span
-                className={classNames("truncate rounded-md transition-all", { "px-2 bg-gray-300": todo.id === active })}
+                className={classNames("ml-2 truncate rounded-md transition-all", {
+                  "px-2 bg-gray-300": todo.id === active,
+                })}
               >
                 {todo.name}
               </span>

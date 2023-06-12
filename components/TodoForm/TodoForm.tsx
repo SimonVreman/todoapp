@@ -17,7 +17,7 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     setLoading(true)
     if (data.timestamp) data.timestamp = new Date(data.timestamp).getTime()
     const todo = oldTodo?.id !== undefined ? todoStore.update(data, oldTodo.id) : todoStore.create(data)
@@ -33,14 +33,14 @@ export default function TodoForm({ oldTodo }: { oldTodo?: Todo }) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className={"w-full"}>
       <div className={"mb-2"}>
         <label
           className={classNames("text-gray-600 mb-1", {
             "text-red-600": errors.name,
           })}
         >
-          Name {errors.name?.message}
+          Name {errors.name?.message?.toString()}
         </label>
         <input
           className={"rounded-md border border-gray-300 p-1 w-full"}

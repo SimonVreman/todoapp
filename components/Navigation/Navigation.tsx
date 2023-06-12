@@ -6,7 +6,7 @@ import { PlusSmallIcon } from "@heroicons/react/24/outline"
 import { observer } from "mobx-react-lite"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Todo } from "@/types/todo"
+import { Todo, TodoGroups } from "@/types/todo"
 import NavigationLoading from "@/components/Navigation/NavigationLoading"
 import NavigationGroup from "@/components/NavigationGroup/NavigationGroup"
 import dayjs from "dayjs"
@@ -35,7 +35,7 @@ const Navigation = () => {
   }
 
   const notDone = filteredTodos.filter((todo) => !todo.done)
-  const groups = {
+  const groups: TodoGroups = {
     Overdue: notDone.filter((todo) => todo.timestamp && todo.timestamp < Date.now()),
     Today: notDone.filter((todo) => todo.timestamp && dayjs(todo.timestamp).diff(dayjs(), "day") === 0),
     Tomorrow: notDone.filter((todo) => todo.timestamp && dayjs(todo.timestamp).diff(dayjs(), "day") === 1),
@@ -70,7 +70,7 @@ const Navigation = () => {
       <div className={"flex flex-col overflow-y-scroll mt-2"}>
         {todos &&
           todos.length !== 0 &&
-          Object.keys(groups).map((group) => {
+          Object.keys(groups).map((group: string) => {
             const todos = groups[group]
             if (todos.length === 0) return null
             return <NavigationGroup key={group} title={group} todos={groups[group]} active={active} />

@@ -15,3 +15,7 @@ export interface NonPersistedTodo {
   priority: number
   done: boolean
 }
+
+export interface TodoGroups {
+  [key: string]: Todo[]
+}

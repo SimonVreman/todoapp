@@ -49,7 +49,8 @@ export class TodoStore {
 
   toggleDone(id: number) {
     const todo = this.getById(id)
-    const modifiedTodo = {
+    if (!todo) return
+    const modifiedTodo: any = {
       ...todo,
       done: !todo.done,
     }
