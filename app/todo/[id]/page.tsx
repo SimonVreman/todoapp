@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite"
 
 const Page = ({ params }: { params: { id: number } }) => {
   const { todoStore } = useStore()
-  const todo = todoStore.getById(params.id)
+  const todo = todoStore.getById(+params.id)
 
   if (!todo) {
     notFound()
