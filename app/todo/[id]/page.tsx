@@ -22,7 +22,7 @@ const Page = ({ params }: { params: { id: number } }) => {
       </div>
       <TodoDetails todo={todo} />
       <div className={"mt-2"}>
-        {todo.description && <p>{todo.description}</p>}
+        {todo.description && <p className={"whitespace-pre-line"}>{todo.description}</p>}
         {!todo.description && <p className={"italic"}>No description</p>}
       </div>
     </SimplePage>
